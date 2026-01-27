@@ -39,14 +39,19 @@
             $ps = [powershell]::Create().AddScript({
                 param($ip, $target, $check)
                 $o = nslookup -timeout=1 $target $ip 2>$null
-                
-                $ans = $o | Select-Object -Skip 3
-                
+                if ($null -eq $o) { return $null }
+
+                # استخراج تمام آی‌پی‌ها و حذف آی‌پی خود سرور دی‌ان‌اس
+                $ips = $o | Select-String -Pattern "\b(?:\d{1,3}\.){3}\d{1,3}\b" -AllMatches | ForEach-Object { $_.Matches.Value }
+                $actualAns = $ips | Where-Object { $_ -ne $ip }
+
                 $isClean = $false
-                if ($check -eq "RE_ALL_IPS") {
-                    if ($ans -match "\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}") { $isClean = $true }
-                } else {
-                    if ($ans -match $check) { $isClean = $true }
+                if ($actualAns) {
+                    if ($check -eq "RE_ALL_IPS") {
+                        $isClean = $true
+                    } else {
+                        if ($actualAns -match $check) { $isClean = $true }
+                    }
                 }
 
                 if ($isClean) {
