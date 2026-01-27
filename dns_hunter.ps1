@@ -18,8 +18,8 @@
 
     switch ($choice) {
         "1" { $target = "whatsapp.com"; $check = "31.13.|57.144.|163.70." }
-        "2" { $target = "youtube.com"; $check = "142.250.|142.251.|172.217.|216.58.|172.253.|74.125." }        "3" { 
-            $rawDomain = Read-Host "Enter domain (e.g., telegram.org)"
+        "2" { $target = "youtube.com"; $check = "142.250.|142.251.|172.217.|216.58.|172.253.|74.125." }        
+        "3" { $rawDomain = Read-Host "Enter domain (e.g., telegram.org)"
             $target = $rawDomain.Trim()
             $check = "RE_ALL_IPS" 
         }
@@ -78,4 +78,3 @@
         }
     }
 }
-
