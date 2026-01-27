@@ -13,6 +13,7 @@
     Write-Host "`nSelect Target to verify clean DNS:" -ForegroundColor White
     Write-Host "1) WhatsApp (Strict Filtering Check)"
     Write-Host "2) YouTube (Google Subnet Check)"
+    Write-Host "3) Custom Domain (Manual Entry)"
     $choice = Read-Host "`nChoose (1-3)"
 
     switch ($choice) {
@@ -77,3 +78,4 @@
         }
     }
 }
+
