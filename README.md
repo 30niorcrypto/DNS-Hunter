@@ -9,9 +9,16 @@
 - **Zero Dependencies:** Runs natively on Windows PowerShell.
 
 ## 💻 How to Run
-1. Download the `DNS_Hunter.ps1` file.
+### Method 1: Instant Execution (Fastest)
+No need to download anything! Just copy and paste the following command into your PowerShell and press **Enter**:
+
+```powershell
+iex (irm https://raw.githubusercontent.com/30niorcrypto/DNS-Hunter/refs/heads/main/dns_hunter.ps1)
+
+### Method 2: Manual Execution
+1. Download the `dns_hunter.ps1` file.
 2. Right-click and select **Run with PowerShell** (or run as Administrator for best results).
-3. Enter the target subnet (e.g., `1.1.1` or `2.188.21`).
+3. Enter 3-octet Network Prefix (Sample: 2.188.21 for 2.188.21.0/24 range).
 
 ## 👤 Author
 Created by **Senior Crypto**
