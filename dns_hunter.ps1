@@ -12,17 +12,15 @@
     $s = Read-Host "Enter 3-octet Network Prefix (Sample: 2.188.21 for 2.188.21.0/24 range)"
     Write-Host "`nSelect Target to verify clean DNS:" -ForegroundColor White
     Write-Host "1) WhatsApp (Strict Filtering Check)"
-    Write-Host "2) Instagram (Meta Subnet Check)"
-    Write-Host "3) Custom Domain (Manual Entry)"
+    Write-Host "2) YouTube (Google Subnet Check)"
     $choice = Read-Host "`nChoose (1-3)"
 
     switch ($choice) {
         "1" { $target = "whatsapp.com"; $check = "31.13.|57.144.|163.70." }
-        "2" { $target = "instagram.com"; $check = "31.13.|57.144.|157.240.|185.60." }
-        "3" { 
+        "2" { $target = "youtube.com"; $check = "142.250.|142.251.|172.217.|216.58.|172.253.|74.125." }        "3" { 
             $rawDomain = Read-Host "Enter domain (e.g., telegram.org)"
             $target = $rawDomain.Trim()
-            $check = "RE_ALL_IPS" # پرچم برای حالت کاستوم
+            $check = "RE_ALL_IPS" 
         }
         default { $target = "whatsapp.com"; $check = "31.13.|57.144.|163.70." }
     }
@@ -41,15 +39,12 @@
                 param($ip, $target, $check)
                 $o = nslookup -timeout=1 $target $ip 2>$null
                 
-                # جدا کردن بخش پاسخ (خطوط بعد از نام سرور) برای جلوگیری از باگ لیست شدن همه
                 $ans = $o | Select-Object -Skip 3
                 
                 $isClean = $false
                 if ($check -eq "RE_ALL_IPS") {
-                    # در حالت کاستوم فقط چک میکنیم که پاسخی شامل آی‌پی معتبر داشته باشیم
                     if ($ans -match "\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}") { $isClean = $true }
                 } else {
-                    # در حالت واتس‌اپ و اینستاگرام، رنج آی‌پی رو چک میکنیم
                     if ($ans -match $check) { $isClean = $true }
                 }
 
