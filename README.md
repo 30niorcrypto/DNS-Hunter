@@ -63,7 +63,7 @@ iex (irm https://raw.githubusercontent.com/30niorcrypto/DNS-Hunter/refs/heads/ma
 👤 نویسنده
 کد از Senior Crypto
 
-توییتر (X): @30niorcrypto
+ایکس (X): @30niorcrypto
 
 
 ⚖️ لایسنس
