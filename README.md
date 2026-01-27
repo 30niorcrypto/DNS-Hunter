@@ -9,21 +9,17 @@
 - **Zero Dependencies:** Runs natively on Windows PowerShell.
 
 ## 💻 How to Run
-### Method 1: Instant Execution (Fastest)
-No need to download anything! Just copy and paste the following command into your PowerShell and press **Enter**:
+### Instant Execution (Fastest)
+1. No need to download anything! Just copy and paste the following command into your PowerShell and press **Enter**:
 
 ```powershell
 iex (irm https://raw.githubusercontent.com/30niorcrypto/DNS-Hunter/refs/heads/main/dns_hunter.ps1)
 ```
-### Method 2: Manual Execution
-1. Download the `dns_hunter.ps1` file.
-2. Right-click and select **Run with PowerShell** (or run as Administrator for best results).
-3. Enter 3-octet Network Prefix (Sample: `2.188.21` for `2.188.21.0/24` range).
+2. Enter 3-octet Network Prefix (Sample: `2.188.21` for `2.188.21.0/24` range).
 
 ## 👤 Author
 Created by **Senior Crypto**
-- **X (Twitter):** [@30niorcrypto](https://x.com/30niorcrypto)
-- **Goal:** Promoting network freedom and transparency.
+- **X:** [@30niorcrypto](https://x.com/30niorcrypto)
 
 ## ⚖️ License
 This project is licensed under the MIT License - feel free to use and contribute!
@@ -39,26 +35,21 @@ This project is licensed under the MIT License - feel free to use and contribute
 
 ### 🚀 ویژگی‌های کلیدی
 * **پردازش موازی:** استفاده از `RunspacePool` برای اسکن فوق‌سریع (۵۰ رشته همزمان).
-* **تایید عمیق:** بررسی دقیق رنج‌های آی‌پی برای اطمینان از «تمیز» بودن گره‌ها.
+* **تایید عمیق:** بررسی دقیق رنج‌های آی‌پی برای اطمینان از «تمیز» بودن نودها.
 * **رابط کاربری ساده:** نمایش خروجی رنگی و مرتب برای خوانایی بهتر.
 * **بدون پیش‌نیاز:** به صورت بومی روی تمام نسخه‌های ویندوز پاورشل اجرا می‌شود.
 
 ### 💻 روش‌های اجرا
 
 #### روش اول: اجرای سریع (پیشنهادی)
-بدون نیاز به دانلود! فقط کافیست دستور زیر را کپی کرده، در محیط پاورشل وارد کنید و کلید **Enter** را بزنید:
+۱. بدون نیاز به دانلود! فقط کافیست دستور زیر را کپی کرده، در محیط پاورشل وارد کنید و کلید **Enter** را بزنید:
 
 ```powershell
 iex (irm https://raw.githubusercontent.com/30niorcrypto/DNS-Hunter/refs/heads/main/dns_hunter.ps1)
 ```
 
-#### روش دوم: اجرای دستی
 
-۱. فایل `dns_hunter.ps1` را دانلود کنید.
-
-۲. روی فایل راست‌کلیک کرده و گزینه **Run with PowerShell** را بزنید.
-
-۳. سه بخش اول شبکه (Subnet) مورد نظر را وارد کنید (مثال: `2.188.21` برای سابنت `2.188.21.0/24`)..
+۲. سه بخش اول شبکه (Subnet) مورد نظر را وارد کنید (مثال: `2.188.21` برای رنج `2.188.21.0/24`)..
 
 👤 نویسنده
 کد از Senior Crypto
