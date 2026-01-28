@@ -1,4 +1,4 @@
-# 🚀 DNS Hunter PRO by Senior Crypto (@30niorcrypto)
+#DNS Hunter PRO by Senior Crypto (@30niorcrypto)
 & {
     Clear-Host
     $header = @"
@@ -9,8 +9,7 @@
 "@
     Write-Host $header -ForegroundColor Yellow
 
-    
-    Write-Host "🔍 Global DNS Health Check..." -ForegroundColor Cyan
+    Write-Host "Global DNS Health Check..." -ForegroundColor Cyan
     $globalDNS = @{"Google"="8.8.8.8"; "Cloudflare"="1.1.1.1"; "Quad9"="9.9.9.9"; "OpenDNS"="208.67.222.222"; "Level3"="4.2.2.2"}
     foreach ($name in $globalDNS.Keys) {
         $test = nslookup -timeout=1 google.com $globalDNS[$name] 2>$null
@@ -25,7 +24,7 @@
     Write-Host "  2.188.10-20  -> Scans subnets 10 to 20 (2.188.10.0 to 2.188.20.255)" -ForegroundColor DarkGray
     
     $inputPrefix = Read-Host "`nEnter Network Prefix or Range"
-    Write-Host "`nSelect Target to verify clean DNS:" -ForegroundColor White
+    Write-Host "`nSelect Target to verify clean DNS:" -ForegroundColor Yellow
     Write-Host "1) X / Twitter (Cloudflare Subnet Check)"
     Write-Host "2) YouTube (Google Subnet Check)"
     Write-Host "3) Custom Domain (Manual Entry)"
@@ -55,7 +54,7 @@
         }
 
         $mainPrefix = "$($parts[0]).$($parts[1])"
-        Write-Host "`n🚀 Hunting started in $displayRange ... targeting [$target]" -ForegroundColor Cyan
+        Write-Host "`nHunting started in $displayRange ... targeting [$target]" -ForegroundColor Cyan
         
         $rs = [runspacefactory]::CreateRunspacePool(1, 100)
         $rs.Open()
@@ -86,7 +85,7 @@
                         else { if ($actualAns -match $check) { $isValid = $true } }
                         
                         if ($isValid) {
-                            return [PSCustomObject]@{ IPAddress = $ip; Status = "✅ Clean"; "Response(ms)" = $sw.ElapsedMilliseconds }
+                            return [PSCustomObject]@{ IPAddress = $ip; Status = "Clean"; "Response(ms)" = $sw.ElapsedMilliseconds }
                         }
                     }
                 }).AddArgument($ip).AddArgument($target).AddArgument($check)
@@ -107,14 +106,42 @@
         $res = $allTasks | ForEach-Object { $_.Pipe.EndInvoke($_.Result) } | Where-Object { $_ -ne $null }
         $rs.Close()
 
-        Write-Host "`n✨ Hunting Finished!" -ForegroundColor Green
+        Write-Host "`nPhase 1: Clean DNS Nodes Found!" -ForegroundColor Green
         if ($res) {
             $finalList = $res | Sort-Object { [version]$_.IPAddress } -Unique
-            Write-Host "Found $($finalList.Count) clean nodes for $target`n" -ForegroundColor Magenta
-            $finalList | Format-Table -Property IPAddress, Status, "Response(ms)" -AutoSize | Out-Host
+            Write-Host "Found $($finalList.Count) clean nodes for $target`n" -ForegroundColor Yellow
+            
+            $finalList | Format-Table -Property IPAddress, Status, "Response(ms)" -AutoSize | Out-String | ForEach-Object {
+                $_ -replace "Clean", "$( [char]27 )[32mClean$( [char]27 )[0m"
+            } | Write-Host
+
+            Write-Host "`nPhase 2: Hunting for Secure DNS (Port 443/TCP)..." -ForegroundColor Green
+            $secureNodes = @()
+
+            foreach ($node in $finalList) {
+                Write-Host "  Testing $($node.IPAddress)... " -NoNewline -ForegroundColor Gray
+                
+                $checkDNS = nslookup -vc -port=443 -timeout=8 google.com $node.IPAddress 2>$null
+                
+                if ($checkDNS -match "Name:\s+google\.com") {
+                    Write-Host "Found! (Supporting Secure DNS DoH/TCP)" -ForegroundColor Green
+                    $secureNodes += [PSCustomObject]@{ IPAddress = $node.IPAddress; "DoH/TCP" = "Ready"; "Response(ms)" = $node."Response(ms)" }
+                } else {
+                    Write-Host "Failed (Not supporting Secure DNS DoH/TCP)" -ForegroundColor Red
+                }
+            }
+
+            if ($secureNodes) {
+                Write-Host "`nSecure DNS Servers (Perfect for DoH on Xray! Sample: https://1.2.3.4/dns-query):" -ForegroundColor Yellow
+                $secureNodes | Format-Table -AutoSize | Out-String | ForEach-Object {
+                    $_ -replace "Ready", "$( [char]27 )[32mReady$( [char]27 )[0m"
+                } | Write-Host
+            } else {
+                Write-Host "`nNo Secure DNS (Port 443) found among clean nodes." -ForegroundColor Yellow
+            }
+
         } else {
-            Write-Host "❌ No Clean Nodes found." -ForegroundColor Red
+            Write-Host "No Clean Nodes found." -ForegroundColor Red
         }
     }
 }
-
