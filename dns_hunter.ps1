@@ -9,7 +9,7 @@
 "@
     Write-Host $header -ForegroundColor Yellow
 
-    # --- بخش Health Check ---
+    
     Write-Host "🔍 Global DNS Health Check..." -ForegroundColor Cyan
     $globalDNS = @{"Google"="8.8.8.8"; "Cloudflare"="1.1.1.1"; "Quad9"="9.9.9.9"; "OpenDNS"="208.67.222.222"; "Level3"="4.2.2.2"}
     foreach ($name in $globalDNS.Keys) {
@@ -117,3 +117,4 @@
         }
     }
 }
+
