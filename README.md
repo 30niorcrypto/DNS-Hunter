@@ -5,6 +5,7 @@
 ## 🚀 Key Features
 - **Anti-Poisoning Logic:** Smart detection and filtering of fake "Sinkhole" IPs from genuine YouTube/X nodes.
 - **High-Speed Scanning:** Powered by `RunspacePool` for parallel processing (100 threads) to scan in seconds.
+- **Secure DNS Discovery (DoH/TCP):** Scans for clean nodes supporting encrypted DNS over Port 443
 - **Flexible Range Support:** Supports single IP, full /24 subnets, or custom subnet ranges (e.g., 2.188.10-20).
 - **Zero Dependencies:** Runs natively on Windows PowerShell without any third-party requirements.
 
@@ -39,6 +40,7 @@ This project is licensed under the MIT License - feel free to use and contribute
 ### 🚀 ویژگی‌های کلیدی
 - **منطق ضدِ فریب (Anti-Poisoning):** استفاده از الگوی پیشرفته Regex برای تشخیص DNSهای واقعی.
 - **اسکن سریع:** بهره‌گیری از `RunspacePool` برای پردازش موازی (۱۰۰ رشته همزمان) جهت اسکن کامل در چند ثانیه.
+- **پیداکردن DNS امن (DoH/TCP):** اسکن نودهای تمیزی که از پروتکل رمزنگاری‌شده روی پورت ۴۴۳ پشتیبانی می‌کنن.
 - **پشتیبانی از رنج‌های منعطف:** قابلیت اسکن تک آی‌پی، ساب‌نت‌های کامل (/24) یا رنج‌های سفارشی (مثلاً 2.188.10-20).
 - **بدون وابستگی:** اجرای کاملاً بومی (Native) در محیط پاورشل ویندوز بدون نیاز به نصب هیچ ابزار جانبی.
 
