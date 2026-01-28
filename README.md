@@ -5,7 +5,7 @@
 ## 🚀 Key Features
 - **Anti-Poisoning Logic:** Smart detection and filtering of fake "Sinkhole" IPs from genuine YouTube/X nodes.
 - **High-Speed Scanning:** Powered by `RunspacePool` for parallel processing (100 threads) to scan in seconds.
-- **Secure DNS Discovery (DoH/TCP):** Scans for clean nodes supporting encrypted DNS over Port 443
+- **Secure DNS Discovery (DoH/TCP):** Scans for clean nodes supporting encrypted DNS over Port 443.
 - **Flexible Range Support:** Supports single IP, full /24 subnets, or custom subnet ranges (e.g., 2.188.10-20).
 - **Zero Dependencies:** Runs natively on Windows PowerShell without any third-party requirements.
 
