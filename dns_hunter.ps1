@@ -4,10 +4,20 @@
     $header = @"
 ****************************************************
      🔥 DNS Hunter - SeniorCrypto Script 🔥    
-            Twitter/X: @30niorcrypto                        
+            Twitter/X: @30niorcrypto                    
 ****************************************************
 "@
     Write-Host $header -ForegroundColor Yellow
+
+    # --- بخش Health Check ---
+    Write-Host "🔍 Global DNS Health Check..." -ForegroundColor Cyan
+    $globalDNS = @{"Google"="8.8.8.8"; "Cloudflare"="1.1.1.1"; "Quad9"="9.9.9.9"; "OpenDNS"="208.67.222.222"; "Level3"="4.2.2.2"}
+    foreach ($name in $globalDNS.Keys) {
+        $test = nslookup -timeout=1 google.com $globalDNS[$name] 2>$null
+        if ($test -match "Address") { Write-Host "  [+] $name ($($globalDNS[$name])) is WORKING" -ForegroundColor Green }
+        else { Write-Host "  [-] $name ($($globalDNS[$name])) is BLOCKED/TIMEOUT" -ForegroundColor Red }
+    }
+    Write-Host "----------------------------------------------------`n" -ForegroundColor Gray
 
     Write-Host "Network Prefix Examples:" -ForegroundColor DarkGray
     Write-Host "  2.188        -> Scans 2.188.0.0 to 2.188.255.255" -ForegroundColor DarkGray
@@ -22,18 +32,9 @@
     $choice = Read-Host "`nChoose (1-3)"
 
     switch ($choice) {
-        "1" { 
-            $target = "x.com"
-            $check = "^104\.(1[6-9]|2[0-3])\.|^172\.(6[4-9]|7[0-1])\.|^108\.162\.|^162\.15[8-9]\." 
-        }
-        "2" { 
-            $target = "youtube.com"
-            $check = "^142\.25[0-1]\.|^172\.217\.|^172\.253\.|^74\.125\.|^208\.117\." 
-        }        
-        "3" { 
-            $target = (Read-Host "Enter domain (e.g., telegram.org)").Trim()
-            $check = "CUSTOM" 
-        }
+        "1" { $target = "x.com"; $check = "^104\.(1[6-9]|2[0-3])\.|^172\.(6[4-9]|7[0-1])\.|^108\.162\.|^162\.15[8-9]\." }
+        "2" { $target = "youtube.com"; $check = "^142\.25[0-1]\.|^172\.217\.|^172\.253\.|^74\.125\.|^208\.117\." }        
+        "3" { $target = (Read-Host "Enter domain (e.g., telegram.org)").Trim(); $check = "CUSTOM" }
     }
 
     if ($inputPrefix) {
@@ -47,12 +48,10 @@
                 $subnets = [int]$range[0]..[int]$range[1]
                 $displayRange = "$($parts[0]).$($parts[1]).[$($parts[2])].x"
             } else {
-                $subnets = @([int]$parts[2])
-                $displayRange = "$prefix.x"
+                $subnets = @([int]$parts[2]); $displayRange = "$prefix.x"
             }
         } elseif ($parts.Count -eq 2) {
-            $subnets = 0..255
-            $displayRange = "$prefix.x.x"
+            $subnets = 0..255; $displayRange = "$prefix.x.x"
         }
 
         $mainPrefix = "$($parts[0]).$($parts[1])"
@@ -73,7 +72,9 @@
                 $ip = "$subnetPrefix.$i"
                 $ps = [powershell]::Create().AddScript({
                     param($ip, $target, $check)
+                    $sw = [System.Diagnostics.Stopwatch]::StartNew()
                     $o = nslookup -timeout=1 $target $ip 2>$null
+                    $sw.Stop()
                     if ($null -eq $o -or $o -match "Can't find" -or $o -match "Non-existent") { return $null }
 
                     $ips = $o | Select-String -Pattern "\b(?:\d{1,3}\.){3}\d{1,3}\b" -AllMatches | ForEach-Object { $_.Matches.Value }
@@ -81,21 +82,17 @@
 
                     if ($actualAns) {
                         $isValid = $false
-                        if ($check -eq "CUSTOM") {
-                            $isValid = $true 
-                        } else {
-                            if ($actualAns -match $check) { $isValid = $true }
-                        }
+                        if ($check -eq "CUSTOM") { $isValid = $true } 
+                        else { if ($actualAns -match $check) { $isValid = $true } }
                         
                         if ($isValid) {
-                            return [PSCustomObject]@{ IPAddress = $ip; Status = "✅ Clean" }
+                            return [PSCustomObject]@{ IPAddress = $ip; Status = "✅ Clean"; "Response(ms)" = $sw.ElapsedMilliseconds }
                         }
                     }
                 }).AddArgument($ip).AddArgument($target).AddArgument($check)
                 $ps.RunspacePool = $rs
                 $task = [PSCustomObject]@{ Pipe = $ps; Result = $ps.BeginInvoke(); IP = $ip }
-                $subnetTasks += $task
-                $allTasks += $task
+                $subnetTasks += $task; $allTasks += $task
             }
 
             while ($subnetTasks.Result.IsCompleted -contains $false) {
@@ -114,7 +111,7 @@
         if ($res) {
             $finalList = $res | Sort-Object { [version]$_.IPAddress } -Unique
             Write-Host "Found $($finalList.Count) clean nodes for $target`n" -ForegroundColor Magenta
-            $finalList | Format-Table -AutoSize | Out-Host
+            $finalList | Format-Table -Property IPAddress, Status, "Response(ms)" -AutoSize | Out-Host
         } else {
             Write-Host "❌ No Clean Nodes found." -ForegroundColor Red
         }
