@@ -4,9 +4,9 @@
 
 ## 🚀 Key Features
 - **Anti-Poisoning Logic:** Smart detection and filtering of fake "Sinkhole" IPs from genuine YouTube/X nodes.
-- **Smart Target Verification:** Specifically tuned whitelists for **YouTube (GGC)** and **X (Cloudflare)** to ensure nodes are truly functional.
-- **High-Speed Scanning:** Powered by `RunspacePool` for parallel processing (100 threads) to scan entire subnets in seconds.
-- **Zero-False Positive:** Filters out non-functional Google/Cloudflare IP ranges that usually cause "connected but no loading" issues.
+- **Smart Target Verification:** Specifically tuned whitelists for **YouTube (GGC)** and **X (Cloudflare)**.
+- **High-Speed Scanning:** Powered by `RunspacePool` for parallel processing (100 threads) to scan in seconds.
+- **Zero-False Positive:** Filters out non-functional Google/Cloudflare IP ranges that usually cause issues.
 - **Flexible Range Support:** Supports single IP, full /24 subnets, or custom subnet ranges (e.g., 2.188.10-20).
 - **Zero Dependencies:** Runs natively on Windows PowerShell without any third-party requirements.
 
@@ -40,9 +40,9 @@ This project is licensed under the MIT License - feel free to use and contribute
 
 ### 🚀 ویژگی‌های کلیدی
 - **منطق ضدِ فریب (Anti-Poisoning):** استفاده از الگوی پیشرفته Regex برای تشخیص DNSهای واقعی.
-- **تایید هوشمند هدف:** دارای لیست‌های سفید اختصاصی برای **YouTube (GGC)** و **X (Cloudflare)** جهت اطمینان از عملکرد واقعی DNSها.
-- **اسکن فوق‌سریع:** بهره‌گیری از `RunspacePool` برای پردازش موازی (۱۰۰ رشته همزمان) جهت اسکن کامل زیرشبکه‌ها در تنها چند ثانیه.
-- **خطای صفر در تایید** حذف خودکار رنج‌های غیرعملیاتی گوگل و کلادفلر که معمولاً باعث بروز مشکل «اتصال بدون لود شدن» می‌شوند.
+- **تایید هوشمند هدف:** دارای لیست‌های سفید برای **YouTube** و **X (Cloudflare)** جهت اطمینان از عملکرد واقعی DNSها.
+- **اسکن فوق‌سریع:** بهره‌گیری از `RunspacePool` برای پردازش موازی (۱۰۰ رشته همزمان) جهت اسکن کامل در چند ثانیه.
+- **خطای صفر در تایید** حذف خودکار رنج‌های غیرعملیاتی گوگل و کلادفلر که معمولاً باعث بروز مشکل می‌شوند.
 - **پشتیبانی از رنج‌های منعطف:** قابلیت اسکن تک آی‌پی، ساب‌نت‌های کامل (/24) یا رنج‌های سفارشی (مثلاً 2.188.10-20).
 - **بدون وابستگی:** اجرای کاملاً بومی (Native) در محیط پاورشل ویندوز بدون نیاز به نصب هیچ ابزار جانبی.
 
