@@ -1,25 +1,28 @@
-# 🎯 DNS Hunter
+# 🎯 Recursive DNS Hunter
+**Recursive DNS Hunter** is a professional, high-performance PowerShell tool designed for network researchers to identify "Clean" and functional **Open Resolvers**. Unlike basic scanners, it features advanced **Anti-Poisoning Logic** that goes beyond simple resolution; it analyzes the integrity of DNS responses against verified IP ranges for **X (Twitter)** and **YouTube**. This ensures that the discovered nodes are not just responding, but are acting as genuine, un-sinkholed recursive servers, effectively bypassing DNS-based filtering and deception.
 
-**DNS Hunter** is a powerful and lightweight PowerShell script designed to help network researchers and users find "Clean" DNS nodes within a specific subnet. By using multi-threading, it quickly verifies if a DNS server resolves popular domains (like WhatsApp/Meta) without interference or strict filtering.
 
 ## 🚀 Key Features
-- **Parallel Processing:** Uses `RunspacePool` for high-speed scanning (50 threads).
-- **Deep Verification:** Checks against specific IP ranges to ensure the node is truly clean.
-- **Minimalist UI:** Clean and colored output for better readability.
-- **Zero Dependencies:** Runs natively on Windows PowerShell.
+- **Anti-Poisoning Logic:** Smart detection and filtering of fake "Sinkhole" IPs from genuine YouTube/X nodes.
+- **Smart Target Verification:** Specifically tuned whitelists for **YouTube (GGC)** and **X (Cloudflare)** to ensure nodes are truly functional.
+- **High-Speed Scanning:** Powered by `RunspacePool` for parallel processing (100 threads) to scan entire subnets in seconds.
+- **Zero-False Positive:** Filters out non-functional Google/Cloudflare IP ranges that usually cause "connected but no loading" issues.
+- **Flexible Range Support:** Supports single IP, full /24 subnets, or custom subnet ranges (e.g., 2.188.10-20).
+- **Zero Dependencies:** Runs natively on Windows PowerShell without any third-party requirements.
+
 
 ## 💻 How to Run
 ### Instant Execution (Fastest)
-1. No need to download anything! Just copy and paste the following command into your PowerShell and press **Enter**:
+No need to download anything! Just copy and paste the following command into your PowerShell and press **Enter**:
 
 ```powershell
 iex (irm https://raw.githubusercontent.com/30niorcrypto/DNS-Hunter/refs/heads/main/dns_hunter.ps1)
 ```
-2. Enter 3-octet Network Prefix (Sample: `2.188.21` for `2.188.21.0/24` range).
 
 ## 👤 Author
 Created by **Senior Crypto**
 - **X:** [@30niorcrypto](https://x.com/30niorcrypto)
+
 
 ## ⚖️ License
 This project is licensed under the MIT License - feel free to use and contribute!
@@ -28,30 +31,33 @@ This project is licensed under the MIT License - feel free to use and contribute
 
 
 
-## راهنمای فارسی 
+## راهنمای فارسی
 
-### 🎯 معرفی ابزار DNS Hunter
-اسکریپت **DNS Hunter** یک اسکریپت قدرتمند و سبک برای پاورشل (PowerShell) است که به شما کمک می‌کند تا سرورهای DNS را در یک زیرشبکه یا ASN خاص پیدا کنید. این ابزار با استفاده از قابلیت چندرشته‌ای (Multi-threading)، به سرعت بررسی می‌کند که آیا یک سرور DNS می‌تواند دامنه‌های محبوبی مثل واتس‌اپ را بدون دخالت یا فیلترینگ شدید باز کند یا خیر.
+### 🎯 معرفی ابزار Recursive DNS Hunter
+اسکریپت **Recursive DNS Hunter** یک ابزار حرفه‌ای، فوق‌سریع و سبک تحت PowerShell است که به طور اختصاصی برای شناسایی **Open Resolver**های «تمیز» و بدون اختلال طراحی شده است. 
+تفاوت اصلی این ابزار با اسکنرهای معمولی، بهره‌گیری از تکنولوژی **Anti-Poisoning Logic** است؛ این اسکریپت تنها به دریافت پاسخ از سرور بسنده نمی‌کند، بلکه با تحلیل محتوای پاسخ و تطبیق آن با رنج‌های رسمی **YouTube** و **X (Twitter)**، مطمئن می‌شود که سرور مورد نظر شما یک **Recursive DNS** واقعی است و شما را به تله‌های فیلترینگ (Sinkhole) هدایت نمی‌کند. این ابزار با استفاده از قابلیت چندرشته‌ای (Multi-threading)، به سرعت زیرشبکه‌های ASN را برای یافتن نودهای سالم، آزاد و واقعی اسکن می‌کند.
+
 
 ### 🚀 ویژگی‌های کلیدی
-* **پردازش موازی:** استفاده از `RunspacePool` برای اسکن فوق‌سریع (۵۰ رشته همزمان).
-* **تایید عمیق:** بررسی دقیق رنج‌های آی‌پی برای اطمینان از «تمیز» بودن نودها.
-* **رابط کاربری ساده:** نمایش خروجی رنگی و مرتب برای خوانایی بهتر.
-* **بدون پیش‌نیاز:** به صورت بومی روی تمام نسخه‌های ویندوز پاورشل اجرا می‌شود.
+- **منطق ضدِ فریب (Anti-Poisoning):** استفاده از الگوی پیشرفته Regex برای تشخیص DNSهای واقعی.
+- **تایید هوشمند هدف:** دارای لیست‌های سفید اختصاصی برای **YouTube (GGC)** و **X (Cloudflare)** جهت اطمینان از عملکرد واقعی DNSها.
+- **اسکن فوق‌سریع:** بهره‌گیری از `RunspacePool` برای پردازش موازی (۱۰۰ رشته همزمان) جهت اسکن کامل زیرشبکه‌ها در تنها چند ثانیه.
+- **خطای صفر در تایید** حذف خودکار رنج‌های غیرعملیاتی گوگل و کلادفلر که معمولاً باعث بروز مشکل «اتصال بدون لود شدن» می‌شوند.
+- **پشتیبانی از رنج‌های منعطف:** قابلیت اسکن تک آی‌پی، ساب‌نت‌های کامل (/24) یا رنج‌های سفارشی (مثلاً 2.188.10-20).
+- **بدون وابستگی:** اجرای کاملاً بومی (Native) در محیط پاورشل ویندوز بدون نیاز به نصب هیچ ابزار جانبی.
+
 
 ### 💻 روش‌های اجرا
 
-#### روش اول: اجرای سریع (پیشنهادی)
-۱. بدون نیاز به دانلود! فقط کافیست دستور زیر را کپی کرده، در محیط پاورشل وارد کنید و کلید **Enter** را بزنید:
+#### اجرای سریع (پیشنهادی)
+بدون نیاز به دانلود! فقط کافیست دستور زیر را کپی کرده، در محیط پاورشل وارد کنید و کلید **Enter** را بزنید:
 
 ```powershell
 iex (irm https://raw.githubusercontent.com/30niorcrypto/DNS-Hunter/refs/heads/main/dns_hunter.ps1)
 ```
 
-
-۲. سه بخش اول شبکه (Subnet) مورد نظر را وارد کنید (مثال: `2.188.21` برای رنج `2.188.21.0/24`)..
-
 👤 نویسنده
+
 کد از Senior Crypto
 
 ایکس (X): @30niorcrypto
