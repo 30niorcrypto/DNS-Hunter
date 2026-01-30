@@ -8,6 +8,9 @@
 - **Secure DNS Discovery (DoH/TCP):** Scans for clean nodes supporting encrypted DNS over Port 443.
 - **Flexible Range Support:** Supports single IP, full /24 subnets, or custom subnet ranges (e.g., 2.188.10-20).
 - **Zero Dependencies:** Runs natively on Windows PowerShell without any third-party requirements.
+  ### Latest Update: v2.0.0
+- **Added ASN & Location discovery.**
+- **New Color-coded UI for better analysis.**
 
 
 ## 💻 How to Run
@@ -43,7 +46,9 @@ This project is licensed under the MIT License - feel free to use and contribute
 - **پیداکردن DNS امن (DoH/TCP):** اسکن نودهای تمیزی که از پروتکل رمزنگاری‌شده روی پورت ۴۴۳ پشتیبانی می‌کنن.
 - **پشتیبانی از رنج‌های منعطف:** قابلیت اسکن تک آی‌پی، ساب‌نت‌های کامل (/24) یا رنج‌های سفارشی (مثلاً 2.188.10-20).
 - **بدون وابستگی:** اجرای کاملاً بومی (Native) در محیط پاورشل ویندوز بدون نیاز به نصب هیچ ابزار جانبی.
-
+   ### آخرین به‌روزرسانی: نسخه ۲.۰.۰
+- **شناسایی هوشمند موقعیت و ASN:**
+- **رابط کاربری رنگی:**
 
 ### 💻 روش‌های اجرا
 
