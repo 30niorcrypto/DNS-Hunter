@@ -4,7 +4,7 @@
     $header = @"
 ****************************************************
      🔥 DNS Hunter - SeniorCrypto Script 🔥    
-            Twitter/X: @30niorcrypto                    
+           Twitter/X: @30niorcrypto                    
 ****************************************************
 "@
     Write-Host $header -ForegroundColor Yellow
@@ -111,18 +111,49 @@
             $finalList = $res | Sort-Object { [version]$_.IPAddress } -Unique
             Write-Host "Found $($finalList.Count) clean nodes for $target`n" -ForegroundColor Yellow
             
-            $finalList | Format-Table -Property IPAddress, Status, "Response(ms)" -AutoSize | Out-String | ForEach-Object {
-                $_ -replace "Clean", "$( [char]27 )[32mClean$( [char]27 )[0m"
-            } | Write-Host
+            $enrichedList = foreach ($node in $finalList) {
+                try {
+                    $info = Invoke-RestMethod -Uri "https://ipinfo.io/$($node.IPAddress)/json" -TimeoutSec 3 -ErrorAction SilentlyContinue
+                    $location = if($info.country){ "$($info.city), $($info.country)" } else { "N/A" }
+                    $provider = if($info.org){ $info.org } else { "N/A" }
+                } catch {
+                    $location = "Error"; $provider = "Error/Private"
+                }
+                
+                [PSCustomObject]@{
+                    IPAddress     = $node.IPAddress
+                    Status        = $node.Status
+                    "Resp(ms)"    = $node."Response(ms)".ToString()
+                    Location      = $location
+                    Provider      = $provider
+                }
+            }
+
+            # --- بخش هوشمند برای رنگی کردن تیتر و خروجی فاز ۱ ---
+            $tableLines = ($enrichedList | Format-Table -AutoSize | Out-String).Split("`n") | Where-Object { $_.Trim() -ne "" }
+            
+            for ($i = 0; $i -lt $tableLines.Count; $i++) {
+                if ($i -eq 0) { 
+                    Write-Host $tableLines[$i] -ForegroundColor Cyan # رنگ تیتر ستون‌ها
+                } elseif ($i -eq 1) {
+                    Write-Host $tableLines[$i] -ForegroundColor Gray # خط جداکننده
+                } else {
+                    $line = $tableLines[$i]
+                    if ($line -match "Clean") {
+                        # رنگی کردن کلمه Clean در هر خط خروجی
+                        $line = $line -replace "Clean", "$( [char]27 )[32mClean$( [char]27 )[0m"
+                    }
+                    Write-Host $line
+                }
+            }
+            # --------------------------------------------------
 
             Write-Host "`nPhase 2: Hunting for Secure DNS (Port 443/TCP)..." -ForegroundColor Green
             $secureNodes = @()
 
             foreach ($node in $finalList) {
                 Write-Host "  Testing $($node.IPAddress)... " -NoNewline -ForegroundColor Gray
-                
                 $checkDNS = nslookup -vc -port=443 -timeout=8 google.com $node.IPAddress 2>$null
-                
                 if ($checkDNS -match "Name:\s+google\.com") {
                     Write-Host "Found! (Supporting Secure DNS DoH/TCP)" -ForegroundColor Green
                     $secureNodes += [PSCustomObject]@{ IPAddress = $node.IPAddress; "DoH/TCP" = "Ready"; "Response(ms)" = $node."Response(ms)" }
@@ -139,7 +170,6 @@
             } else {
                 Write-Host "`nNo Secure DNS (Port 443) found among clean nodes." -ForegroundColor Yellow
             }
-
         } else {
             Write-Host "No Clean Nodes found." -ForegroundColor Red
         }
